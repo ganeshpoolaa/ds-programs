@@ -1,118 +1,108 @@
-#include<math.h>
-#include<stdio.h>
-#include<conio.h>
-#include<malloc.h>
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <stdlib.h>
 
-#define MAX 20
-
-typedef struct node
-  {
-int coeff;
-struct node *next;
-  }node;
-
-
-node *  init();
-void read(node *h1);
-void print(node *h1);
-node * add(node *h1,node *h2);
-/*Polynomial is stored in a linked list, ith node  gives coefficient of x^i .
-  a polynomial 3x^2 + 12x^4 will be represented as (0,0,3,0,12,0,0,….)
-*/
-
-void main()
+struct node 
 {
-node *h1=NULL,*h2=NULL,*h3=NULL;
-int option;
-do
+    int c,e;
+    struct node *next;
+}*p1,*p2,*p3;
+
+struct node* insertatend(struct node *head,int c,int e)
 {
-printf("\n1 : create 1'st polynomial");
-printf("\n2 : create 2'nd polynomial");
-printf("\n3 : Add polynomials");
-printf("\n4 : Quit");
-printf("\nEnter your choice :");
-scanf("%d",&option);
-
-switch(option)
-{
-case 1:h1=init();read(h1);break;
-case 2:h2=init();read(h2);break;
-case 3:h3=add(h1,h2);
-      printf("\n1'st polynomial is-> ");
-      print(h1);
-      printf("\n2'nd polynomial is-> ");
-      print(h2);
-      printf("\n\n Sum = ");
-      print(h3);
-      break;
-}
-}while(option!=4);
-}
-
-//  READING POLYNOMIAL
-void  read(node *h)
-{
-int n,i,j,power,coeff;
-node *p;
-p=init();
-printf("\n Enter number of terms :");
-scanf("%d",&n);
-
-/* read n terms */
-for (i=0;i<n;i++)
-{       
-printf("\n Enter %d term power:",i+1);
-scanf("%d",&power);
-printf("\n Enter %d term coeff.:",i+1);
-scanf("%d",&coeff);
-
-for(p=h,j=0;j<power;j++)
-   p=p->next;
-p->coeff=coeff;
-}
-}
-
-//PRINTING
-
-void print(node *p)
-{
-int i;
-for(i=0;p!=NULL;i++,p=p->next)
-if(p->coeff!=0)
-printf("%dX^%d-->",p->coeff,i);
+    struct node *newnode=(struct node*)malloc(sizeof(struct node));
+    newnode->c=c;
+    newnode->e=e;
+    newnode->next=NULL;
+    if(head==NULL)
+        head=newnode;
+    else 
+    {
+        struct node* x=head;
+        while(x->next)
+            x=x->next;
+        x->next=newnode;
+    }
+    return head;
 }
 
 
-// ADDING
-node * add(node *h1, node *h2)
+void display(struct node *head)
 {
-    node *h3,*p;
-    h3=init();
-    p=h3;
-    while(h1!=NULL)
-     {
-h3->coeff=h1->coeff+h2->coeff;
-h1=h1->next;
-h2=h2->next;
-h3=h3->next;
-     }
- return(p);
+     struct node* x=head;
+    //5x^3+4x^2+7x+8
+    while(x!=NULL)
+    {
+        printf("%d",x->c);
+        if(x->e!=0)
+         printf("x^%d",x->e);
+        if(x->next!=NULL)
+         printf("+");
+        x=x->next;
+    }
 }
 
-
-// INITIALIZATION
-
-node * init()
+struct node* add()
 {
-    int i;
-    node *h=NULL,*p;
-for(i=0;i<MAX;i++)
-{
-p=(node*)malloc(sizeof(node));
-p->next=h;
-p->coeff=0;
-h=p;
-}
-return(h);
+    while(p1 && p2)
+    {
+        
+        if(p1->e==p2->e)
+        {
+            p3=insertatend(p3,p1->c+p2->c,p1->e);
+            p1=p1->next;
+            p2=p2->next;
+        }
+        else if(p1->e > p2->e)
+        {
+            p3=insertatend(p3,p1->c,p1->e);
+            p1=p1->next;
+        }
+        else 
+        {
+            p3=insertatend(p3,p2->c,p2->e);
+            p2=p2->next;
+        }
+    }
+
+    while(p1)
+    {
+        p3=insertatend(p3,p1->c,p1->e);
+        p1=p1->next;
+    }
+    
+    while(p2)
+    {
+        p3=insertatend(p3,p2->c,p2->e);
+        p2=p2->next;
+    }
+    return p3;
 }
 
+int main() 
+{
+    int m,n,c,e;
+    scanf("%d",&m);
+    while(m--)
+    {
+        scanf("%d %d",&c,&e);
+        p1=insertatend(p1,c,e);
+    }
+    scanf("%d",&n);
+    while(n--)
+    {
+        scanf("%d %d",&c,&e);
+        p2=insertatend(p2,c,e);
+    }
+    printf("First polynomial is:");
+    display(p1);
+    
+    printf("\nSecond polynomial is:");
+    display(p2);
+    
+    printf("\nThe sum Polynomial is:");
+    p3=add();
+    display(p3);
+    return 0;
+}

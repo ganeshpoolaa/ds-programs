@@ -1,56 +1,3 @@
-//DSOE 4 A4 : Circular Linked List Operations
-
-/*
-Circular linked list is a linear data structure same as linked list except last node is points to first node Your task is to implement the following five operations to CLL:
-
-insert at begin
-insert at end
-delete at begin
-delete at end
-display
-Note: From 1 to 4 functions must have an O(1) running time complexity.
-
-Input Format
-
-First line an integer N
-
-Next N lines each line contain one operation each:1 X denotes insert X value at begin, 2 X denotes insert X value at end,3 denotes delete at begin, 4 denotes delete at end and 5 denotes display the list elements
-
-Constraints
-
-1<= N <= 20
-
-Output Format
-
-Display the Circular Linked List elements every time for every 5 type operation and if you are unable to delete the element print “Invalid” without double codes
-
-Sample Input 0
-
-12
-5
-1 10
-2 20
-1 30
-5
-4
-5
-3
-4
-3
-4
-5
-Sample Output 0
-
-Empty
-->30->10->20->
-->30->10->
-Invalid
-Invalid
-Empty
-
-*/
-
-//DSOE 4 A4 : Circular Linked List Operations
 
 #include <stdio.h>
 #include <string.h>
@@ -187,4 +134,3 @@ int main()
     }
     return 0;
 }
-
